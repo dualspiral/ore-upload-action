@@ -1,13 +1,29 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Deploy to Ore'
+description: 'Deploy a given plugin to Ore using the v2 API'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  plugin:
+    description: 'Plugin to upload - a file name'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  description:
+    description: 'Version Description - can be a file name or a string'
+    required: true
+  apiKey:
+    description: 'The Ore API key to use'
+    required: true
+  tag:
+    description: 'The tag to assign the release to'
+    required: false
+  projectId:
+    description: 'The id of the plugin'
+    required: true
+  oreUrl:
+    description: 'The Ore base URL'
+    required: true
+    default: 'https://ore.spoongepowered.org/'
+  createForumPost:
+    description: 'Whether to create a forum post'
+    required: true
+    default: 'true'
 runs:
   using: 'node16'
   main: 'dist/index.js'
