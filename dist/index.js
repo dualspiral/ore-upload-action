@@ -13915,8 +13915,8 @@ const FormData = __nccwpck_require__(4334);
 const axios = __nccwpck_require__(6545).default
 
 function stripTrailingSlash(url) {
-  if (providedOreUrl.endsWith("/")) {
-    return url.substring(0, providedOreUrl.length - 1);
+  if (url.endsWith("/")) {
+    return url.substring(0, url.length - 1);
   } else {
     return url;
   }
