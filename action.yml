@@ -1,5 +1,8 @@
 name: 'Deploy to Ore'
 description: 'Deploy a given plugin to Ore using the v2 API'
+branding: 
+  icon: 'upload-cloud'
+  color: 'yellow'
 inputs:
   plugin:
     description: 'Plugin to upload based on the key from the '
@@ -13,8 +16,8 @@ inputs:
   channel:
     description: 'The channel to assign the release to. Note that this may be deprecated in future.'
     required: false
-  projectId:
-    description: 'The id of the plugin'
+  pluginId:
+    description: 'The plugin ID'
     required: true
   oreUrl:
     description: 'The Ore base URL'

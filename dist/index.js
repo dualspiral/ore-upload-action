@@ -15816,7 +15816,7 @@ const orePluginAction = (function() {
         const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"), path = undefined, options = { createArtifactFolder: true });
         const tag = core.getInput("tag");
         const oreUrl = stripTrailingSlash(core.getInput("oreUrl"));
-        const projectId = core.getInput("projectId");
+        const pluginId = core.getInput("pluginId");
         const apiKey = `OreApi apikey="${core.getInput("apiKey")}"`;
 
         verboseLog("Determining description");
@@ -15852,7 +15852,7 @@ const orePluginAction = (function() {
 
         verboseLog(`Description: ${descriptionInput}`);
         const apiAuthUrl = `${oreUrl}/api/v2/authenticate`
-        const apiPostVersionUrl = `${oreUrl}/api/v2/projects/${projectId}/versions`
+        const apiPostVersionUrl = `${oreUrl}/api/v2/projects/${pluginId}/versions`
 
         // Start by authenticating with the Ore client
         
