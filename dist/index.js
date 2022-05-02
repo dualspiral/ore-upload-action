@@ -15758,7 +15758,7 @@ const orePluginAction = (function() {
     return fileName.match(/.jar$/) !== null
   }
 
-  async function selectFile(directory, fileNamePredicate = fileName => true, fileContentsPredicate = (directoryName, fileName) => true) {
+ function selectFile(directory, fileNamePredicate = fileName => true, fileContentsPredicate = (directoryName, fileName) => true) {
     try {
       const result = fs.readdirSync(directory).filter(fileName => {
         if (fileNamePredicate(fileName)) {
@@ -15766,8 +15766,8 @@ const orePluginAction = (function() {
           return fileContentsPredicate(directory, fileName)
         }
       })[0];
-      verboseLog(`Using file: ${result}`);
-      return fsPromises.readFile(pathJoiner(directory, result));
+      verboseLog(`Using file: ${fileName}`);
+      return fs.createReadStream(pathJoiner(directory, result));
     } catch (err) {
       console.error(err);
       core.setFailed(err.message)
