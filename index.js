@@ -28,9 +28,11 @@ const orePluginAction = (function() {
     try {
       const result = fs.readdirSync(directory).filter(fileName => {
         if (fileNamePredicate(fileName)) {
+          verboseLog(`Detected file: ${fileName}`);
           return fileContentsPredicate(directory, fileName)
         }
       })[0];
+      verboseLog(`Using file: ${result}`);
       return fsPromises.readFile(pathJoiner(directory, result));
     } catch (err) {
       console.error(err);
@@ -49,6 +51,7 @@ const orePluginAction = (function() {
           .then(x => Promise.resolve(true))
           .catch(x => Promise.resolve(false));
       }
+      verboseLog(`Selecting file: ${isPlugin}`);
       return isPlugin;
     } finally {
       await zip.close();
@@ -79,7 +82,7 @@ const orePluginAction = (function() {
         const descriptionString = core.getInput("description");
         const descriptionInput =
             await artifactClient.downloadArtifact(descriptionString, options = { createArtifactFolder: true })
-                .then(response => fsPromises.readFile(response.downloadPath))
+                .then(artifact => selectFile(artifact.downloadPath))
                 .then(buffer => buffer.toString())
                 // eslint-disable-next-line no-unused-vars
                 .catch(ignored => Promise.resolve(descriptionString))
