@@ -28,7 +28,7 @@ const orePluginAction = (function() {
     try {
       const result = fs.readdirSync(directory).filter(fileName => {
         if (fileNamePredicate(fileName)) {
-          return predicate(directory, fileName)
+          return fileContentsPredicate(directory, fileName)
         }
       })[0];
       return fsPromises.readFile(pathJoiner(directory, result));
