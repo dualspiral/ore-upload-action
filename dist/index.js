@@ -15766,12 +15766,21 @@ const orePluginAction = (function() {
           return fileContentsPredicate(directory, fileName)
         }
       })[0];
-      verboseLog(`Using file: ${fileName}`);
       return fs.createReadStream(pathJoiner(directory, result));
     } catch (err) {
       console.error(err);
       core.setFailed(err.message)
     }
+  }
+
+  // https://stackoverflow.com/a/49428486
+  function streamToString(stream) {
+    const chunks = [];
+    return new Promise((resolve, reject) => {
+      stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+      stream.on('error', (err) => reject(err));
+      stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    })
   }
 
   async function checkForSpongePluginOrMcModInfoFile(directory, fileName) {
@@ -15817,7 +15826,7 @@ const orePluginAction = (function() {
         const descriptionInput =
             await artifactClient.downloadArtifact(descriptionString, options = { createArtifactFolder: true })
                 .then(artifact => selectFile(artifact.downloadPath))
-                .then(buffer => buffer.toString())
+                .then(readStream => streamToString(readStream))
                 // eslint-disable-next-line no-unused-vars
                 .catch(ignored => Promise.resolve(descriptionString))
 
@@ -15828,7 +15837,7 @@ const orePluginAction = (function() {
         // Start by authenticating with the Ore client
         
         verboseLog("Finding file to send");
-        const fileToSend = await selectFile(pluginLocation.downloadPath, getJarFile, checkForSpongePluginOrMcModInfoFile); // fsPromises.readFile(pluginLocation.downloadPath);
+        const fileToSend = selectFile(pluginLocation.downloadPath, getJarFile, checkForSpongePluginOrMcModInfoFile); // fsPromises.readFile(pluginLocation.downloadPath);
         let infoToSend;
         if (tag !== undefined && tag !== "") {
           infoToSend = {
