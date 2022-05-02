@@ -39,7 +39,7 @@ The following is a sample step you may use as a template for your own action.
 ```
 
 | Key             | Value                                                                                                              |
-========================================================================================================================================
+|-----------------|--------------------------------------------------------------------------------------------------------------------|
 | plugin          | The name of the artifact that you uploaded your plugin to in a previous step/job.                                  |
 | description     | One of <ul><li>The name of an artifact that you uploaded your description into</li><li>A string</li></ul>          |
 | apiKey          | The Ore API Key to authenticate with. **It is strongly recommended that you use Github Secrets for your API key.** |
@@ -55,7 +55,7 @@ There are a further two variables that you may wish to use in special circumstan
 ```
 
 | Key             | Value                                                                                                                                  |
-============================================================================================================================================================
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | oreUrl          | The base URL of the Ore instance to upload to. Defaults to https://ore.spongepowered.org.                                              |
 | verboseLogging  | If true, increases logging in the action. Generally used for debugging this action only - important information will always be logged. |
 
