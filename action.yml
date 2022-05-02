@@ -24,6 +24,10 @@ inputs:
     description: 'Whether to create a forum post'
     required: true
     default: 'true'
+  verboseLogging:
+    description: 'Whether to display verbose logging'
+    required: true
+    default: 'false'
 runs:
   using: 'node16'
   main: 'dist/index.js'

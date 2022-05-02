@@ -15136,6 +15136,8 @@ const path = __nccwpck_require__(5622);
 
 const orePluginAction = (function() {
 
+  const shouldLog = core.getBooleanInput("verboseLogging");
+
   function stripTrailingSlash(url) {
     if (url.endsWith("/")) {
       return url.substring(0, url.length - 1);
@@ -15179,11 +15181,17 @@ const orePluginAction = (function() {
     }
   }
 
+  function verboseLog(message) {
+    if (shouldLog) {
+      console.log(message);
+    }
+  }
+
   return {
     // most @actions toolkit packages have async methods
     run: async function() {
       try {
-        console.log("Starting deployment");
+        verboseLog("Starting deployment");
         // Get the plugin
         const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"), options = { createArtifactFolder: true });
         const tag = core.getInput("tag");
@@ -15191,22 +15199,25 @@ const orePluginAction = (function() {
         const projectId = core.getInput("projectId");
         const apiKey = `OreApi apikey="${core.getInput("apiKey")}"`;
 
+        verboseLog("Determining description");
+
         // Check to see if we have an artefact for the description, else consider it a string.
-        const descriptionString = core.getInput("description")
+        const descriptionString = core.getInput("description");
         const descriptionInput =
             await artifactClient.downloadArtifact(descriptionString, options = { createArtifactFolder: true })
-                .then(response => selectFile(response.downloadPath, getJarFile, checkForSpongePluginOrMcModInfoFile))
+                .then(response => fsPromises.readFile(response.downloadPath))
                 .then(buffer => buffer.toString())
                 // eslint-disable-next-line no-unused-vars
                 .catch(ignored => Promise.resolve(descriptionString))
 
+        verboseLog(`Description: ${descriptionInput}`);
         const apiAuthUrl = `${oreUrl}/api/v2/authenticate`
         const apiPostVersionUrl = `${oreUrl}/api/v2/${projectId}/versions`
 
         // Start by authenticating with the Ore client
-        console.log("Attempting to authenticate against Ore v2");
-
-        const fileToSend = await fsPromises.readFile(pluginLocation.downloadPath);
+        
+        verboseLog("Finding file to send");
+        const fileToSend = await selectFile(pluginLocation.downloadPath, getJarFile, checkForSpongePluginOrMcModInfoFile); // fsPromises.readFile(pluginLocation.downloadPath);
         let infoToSend;
         if (tag !== undefined && tag !== "") {
           infoToSend = {
@@ -15220,6 +15231,8 @@ const orePluginAction = (function() {
             "description": descriptionInput
           }
         }
+
+        verboseLog("Attempting to authenticate against Ore v2");
         axios.post(apiAuthUrl,
             {
               "expires_in": 120
@@ -15230,6 +15243,7 @@ const orePluginAction = (function() {
           }
         }).then(response => {
           if (response.status === 200) {
+            verboseLog("Authenticated - attempting to upload");
             const sessionHeader = `OreKey session="${response.data.session}"`;
             const formData = new FormData();
             formData.append("plugin-info", infoToSend);
