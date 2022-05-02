@@ -5,6 +5,14 @@ const fs = require("fs").promises;
 const FormData = require('form-data');
 const axios = require("axios").default
 
+function stripTrailingSlash(url) {
+  if (providedOreUrl.endsWith("/")) {
+    return url.substring(0, providedOreUrl.length - 1);
+  } else {
+    return url;
+  }
+}
+
 // most @actions toolkit packages have async methods
 async function run() {
   try {
@@ -12,7 +20,7 @@ async function run() {
     // Get the plugin
     const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"));
     const tag = core.getInput("tag");
-    const oreUrl = core.getInput("oreUrl").replaceAll(/\/$/g, "");
+    const oreUrl = stripTrailingSlash(core.getInput("oreUrl"));
     const projectId = core.getInput("projectId");
     const apiKey = `OreApi apikey="${core.getInput("apiKey")}"`;
 
