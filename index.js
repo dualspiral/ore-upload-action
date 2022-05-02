@@ -11,7 +11,7 @@ async function run() {
     // Get the plugin
     const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"));
     const tag = core.getInput("tag");
-    const oreUrl = core.getInput("oreUrl").replaceAll(new RegExp("/$"), "");
+    const oreUrl = core.getInput("oreUrl").replaceAll(/\/$/g, "");
     const projectId = core.getInput("projectId");
     const apiKey = `OreApi apikey="${core.getInput("apiKey")}"`;
 
