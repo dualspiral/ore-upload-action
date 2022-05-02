@@ -15132,7 +15132,7 @@ const fsPromises = fs.promises;
 const FormData = __nccwpck_require__(4334);
 const axios = __nccwpck_require__(6545).default
 const StreamZip = __nccwpck_require__(8119);
-const path = __nccwpck_require__(5622);
+const pathJoiner = __nccwpck_require__(5622).join;
 
 const orePluginAction = (function() {
 
@@ -15157,7 +15157,7 @@ const orePluginAction = (function() {
           return predicate(directory, fileName)
         }
       })[0];
-      return fsPromises.readFile(path.join(directory, result));
+      return fsPromises.readFile(pathJoiner(directory, result));
     } catch (err) {
       console.error(err);
       core.setFailed(err.message)
@@ -15165,7 +15165,7 @@ const orePluginAction = (function() {
   }
 
   async function checkForSpongePluginOrMcModInfoFile(directory, fileName) {
-    const zip = new StreamZip.async({ file: path.join(directory, fileName) });
+    const zip = new StreamZip.async({ file: pathJoiner(directory, fileName) });
     try {
       let isPlugin = zip.entryData('META-INF/sponge-plugins.json')
         .then(x => Promise.resolve(true))
@@ -15193,7 +15193,7 @@ const orePluginAction = (function() {
       try {
         verboseLog("Starting deployment");
         // Get the plugin
-        const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"), options = { createArtifactFolder: true });
+        const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"), path = undefined, options = { createArtifactFolder: true });
         const tag = core.getInput("tag");
         const oreUrl = stripTrailingSlash(core.getInput("oreUrl"));
         const projectId = core.getInput("projectId");
