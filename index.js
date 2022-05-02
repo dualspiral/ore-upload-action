@@ -89,12 +89,32 @@ const orePluginAction = (function() {
 
         // Check to see if we have an artefact for the description, else consider it a string.
         const descriptionString = core.getInput("description");
+        const text = () => Promise.resolve(descriptionString);
         const descriptionInput =
             await artifactClient.downloadArtifact(descriptionString, options = { createArtifactFolder: true })
-                .then(artifact => selectFile(artifact.downloadPath))
-                .then(readStream => streamToString(readStream))
+                .then(artifact => {
+                  if (artifact) {
+                    verboseLog("Artifact detected, obtaining file");
+                    selectFile(artifact.downloadPath)
+                  } else {
+                    verboseLog("No artifact detected - treating as string");
+                    text();
+                  }
+                })
+                .then(readStream => {
+                  if (readStream) {
+                    verboseLog("Reading stream");
+                    return streamToString(readStream)
+                  } else {
+                    verboseLog("readStream was falsy - treating as string");
+                    return text();
+                  }
+                })
                 // eslint-disable-next-line no-unused-vars
-                .catch(ignored => Promise.resolve(descriptionString))
+                .catch(ignored => {
+                  verboseLog(`Error: ${ignored}`);
+                  text();
+                })
 
         verboseLog(`Description: ${descriptionInput}`);
         const apiAuthUrl = `${oreUrl}/api/v2/authenticate`
