@@ -120,10 +120,11 @@ const orePluginAction = (function() {
             verboseLog("Authenticated - attempting to upload");
             const sessionHeader = `OreKey session="${response.data.session}"`;
             const formData = new FormData();
-            formData.append("plugin-info", infoToSend);
+            formData.append("plugin-info", JSON.stringify(infoToSend));
             formData.append("plugin-file", fileToSend);
-            let requestHeaders = formData.getHeaders();
-            requestHeaders.Authorization = sessionHeader;
+            const requestHeaders = formData.getHeaders({
+              "Authorization": sessionHeader
+            });
             return axios.post(apiPostVersionUrl,
                 formData,
                 {
