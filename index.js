@@ -16,7 +16,7 @@ function stripTrailingSlash(url) {
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    core.log("Starting deployment");
+    console.log("Starting deployment");
     // Get the plugin
     const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"));
     const tag = core.getInput("tag");
