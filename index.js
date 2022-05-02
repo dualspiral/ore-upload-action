@@ -91,7 +91,7 @@ const orePluginAction = (function() {
         const descriptionString = core.getInput("description");
         const text = () => Promise.resolve(descriptionString);
         const descriptionInput =
-            await artifactClient.downloadArtifact(descriptionString, options = { createArtifactFolder: true })
+            await artifactClient.downloadArtifact(descriptionString, path = undefined, options = { createArtifactFolder: true })
                 .then(artifact => {
                   if (artifact) {
                     verboseLog("Artifact detected, obtaining file");
