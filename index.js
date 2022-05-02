@@ -122,14 +122,14 @@ const orePluginAction = (function() {
             const formData = new FormData();
             formData.append("plugin-info", JSON.stringify(infoToSend));
             formData.append("plugin-file", fileToSend);
-            const requestHeaders = formData.getHeaders({
-              "Authorization": sessionHeader
+            return axios({
+              method: "POST",
+              url: apiPostVersionUrl,
+              data: formData,
+              headers: {
+                "Authorization": sessionHeader
+              }
             });
-            return axios.post(apiPostVersionUrl,
-                formData,
-                {
-                  headers: requestHeaders
-                });
           } else {
             return Promise.reject(`Did not complete authorisation (received status code ${response.status})`);
           }
