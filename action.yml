@@ -1,5 +1,5 @@
-name: 'Deploy to Ore'
-description: 'Deploy a given plugin to Ore using the v2 API'
+name: 'Deploy Sponge Plugins to Ore'
+description: 'Deploy a given Sponge plugin to Ore using the v2 API'
 branding: 
   icon: 'upload-cloud'
   color: 'yellow'
