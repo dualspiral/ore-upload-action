@@ -95,10 +95,10 @@ const orePluginAction = (function() {
                 .then(artifact => {
                   if (artifact) {
                     verboseLog("Artifact detected, obtaining file");
-                    selectFile(artifact.downloadPath)
+                    return selectFile(artifact.downloadPath)
                   } else {
                     verboseLog("No artifact detected - treating as string");
-                    text();
+                    return text();
                   }
                 })
                 .then(readStream => {
