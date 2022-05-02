@@ -15852,7 +15852,7 @@ const orePluginAction = (function() {
         }).then(response => {
           if (response.status === 200) {
             verboseLog("Authenticated - attempting to upload");
-            const sessionHeader = `OreKey session="${response.data.session}"`;
+            const sessionHeader = `OreApi session="${response.data.session}"`;
             const formData = new FormData();
             formData.append("plugin-info", JSON.stringify(infoToSend));
             formData.append("plugin-file", fileToSend);
