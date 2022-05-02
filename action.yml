@@ -10,8 +10,8 @@ inputs:
   apiKey:
     description: 'The Ore API key to use'
     required: true
-  tag:
-    description: 'The tag to assign the release to'
+  channel:
+    description: 'The channel to assign the release to. Note that this may be deprecated in future.'
     required: false
   projectId:
     description: 'The id of the plugin'

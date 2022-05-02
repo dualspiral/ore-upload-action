@@ -15831,7 +15831,9 @@ const orePluginAction = (function() {
           infoToSend = {
             "create_forum_post": core.getBooleanInput("createForumPost"),
             "description": descriptionInput,
-            "tags": core.getInput("tag")
+            "tags": {
+              "Channel": core.getInput("channel")
+            }
           }
         } else {
           infoToSend = {
