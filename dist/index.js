@@ -13914,13 +13914,22 @@ const fs = __nccwpck_require__(5747).promises;
 const FormData = __nccwpck_require__(4334);
 const axios = __nccwpck_require__(6545).default
 
+function stripTrailingSlash(url) {
+  if (providedOreUrl.endsWith("/")) {
+    return url.substring(0, providedOreUrl.length - 1);
+  } else {
+    return url;
+  }
+}
+
 // most @actions toolkit packages have async methods
 async function run() {
   try {
+    core.log("Starting deployment");
     // Get the plugin
     const pluginLocation = await artifactClient.downloadArtifact(core.getInput("plugin"));
     const tag = core.getInput("tag");
-    const oreUrl = core.getInput("oreUrl").replaceAll(new RegExp("/$"), "");
+    const oreUrl = stripTrailingSlash(core.getInput("oreUrl"));
     const projectId = core.getInput("projectId");
     const apiKey = `OreApi apikey="${core.getInput("apiKey")}"`;
 
