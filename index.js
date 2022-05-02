@@ -135,6 +135,6 @@ const orePluginAction = (function() {
       }
     }
   }
-});
+})();
 
 orePluginAction.run();
