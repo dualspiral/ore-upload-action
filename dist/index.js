@@ -15820,7 +15820,7 @@ const orePluginAction = (function() {
 
         verboseLog(`Description: ${descriptionInput}`);
         const apiAuthUrl = `${oreUrl}/api/v2/authenticate`
-        const apiPostVersionUrl = `${oreUrl}/api/v2/${projectId}/versions`
+        const apiPostVersionUrl = `${oreUrl}/api/v2/projects/${projectId}/versions`
 
         // Start by authenticating with the Ore client
         
