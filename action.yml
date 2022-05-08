@@ -22,7 +22,7 @@ inputs:
   oreUrl:
     description: 'The Ore base URL'
     required: true
-    default: 'https://ore.spoongepowered.org/'
+    default: 'https://ore.spongepowered.org/'
   createForumPost:
     description: 'Whether to create a forum post'
     required: true
